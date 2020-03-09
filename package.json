@@ -1,0 +1,28 @@
+{
+  "name": "ml-digits-recognition",
+  "version": "1.0.0",
+  "description": "Machine learning application with JavaScript.",
+  "main": "index.js",
+  "scripts": {
+    "download-dataset": "node ./bin/download-dataset",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vssenko/ml-digits-recognition.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vssenko/ml-digits-recognition/issues"
+  },
+  "homepage": "https://github.com/vssenko/ml-digits-recognition#readme",
+  "devDependencies": {
+    "eslint": "^6.8.0"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "zlib": "^1.0.5"
+  }
+}
