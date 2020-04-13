@@ -2,7 +2,7 @@ const trainDataProvider = require('./train-data-provider');
 const networkSerializer = require('./network-serializer');
 const utils = require('./network/utils');
 
-const errorTreshold = 0.2;
+const errorTreshold = 0.005;
 
 function train(network) {
     console.log('Preparing for training...');
@@ -15,20 +15,29 @@ function train(network) {
 
     let currentCost = 10;
 
-    for (let i = 0; i < trainData.length; i++){
-        const sample = trainData[i];
-        if (!(i % 1000)) {
-            console.log(`Processing data sample #${i}. Current cost : ${currentCost}`);
-        }
-        const data = sample.imageBytes;
-        const expected = sample.labelArrayRepresentation;
-        const result = network.trainWithData(data, expected);
-        currentCost = utils.costFunction(result, expected);
+    for (let epoch = 0; epoch < 5; epoch++){
         if (currentCost <= errorTreshold){
-            console.log('Cost is satisfying, stop training.');
             break;
         }
+
+        for (let i = 0; i < trainData.length; i++){
+            const sample = trainData[i];
+            if (!(i % 10000)) {
+                console.log(`Epoch ${epoch}. Processing data sample #${i}. Current cost : ${currentCost}`);
+            }
+            const data = sample.imageBytes;
+            const expected = sample.labelArrayRepresentation;
+            const result = network.trainWithData(data, expected);
+            currentCost = utils.costFunction(result, expected);
+            if (currentCost <= errorTreshold){
+                console.log(`Cost is satisfying (${currentCost}), stop training.`);
+                break;
+            }
+        }
+        epoch++;
     }
+
+
     console.log('Serializing network for future usage...');
     networkSerializer.serialize(network);
 }

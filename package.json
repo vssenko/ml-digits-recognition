@@ -6,6 +6,7 @@
     "scripts": {
         "start": "node ./bin/start",
         "train": "node ./bin/train",
+        "test-xor": "node ./bin/test-xor",
         "download-dataset": "node ./bin/download-dataset"
     },
     "repository": {
