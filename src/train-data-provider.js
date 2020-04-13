@@ -14,7 +14,7 @@ function parseImagesBuffer(imagesDataBuffer){
     const imagesBytes = [];
     let pointer = startPosition;
     while(pointer < imagesDataBuffer.length - 1){
-        imagesBytes.push(Uint8Array.from(imagesDataBuffer.slice(pointer, pointer+step)));
+        imagesBytes.push(Array.from(new Uint8Array(imagesDataBuffer.slice(pointer, pointer+step))));
         pointer+=step;
     }
 
@@ -65,6 +65,8 @@ function provideData(imageFileName, labelFileName) {
     console.log(`${trainLabelFile}: Total file length: ${labelsDataBuffer.byteLength}`);
     console.log(`${trainLabelFile}: First magic number: ${labelsDataBuffer.slice(0, 4).readInt32BE()}`);
     console.log(`${trainLabelFile}: Number of labels: ${labelsDataBuffer.slice(4, 8).readInt32BE()}`);
+
+    console.log('Loading...');
 
     const images = parseImagesBuffer(imagesDataBuffer);
     const labels = parseLabelsBuffer(labelsDataBuffer);

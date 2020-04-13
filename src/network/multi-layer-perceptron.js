@@ -15,7 +15,7 @@ const Wire = require('./wire');
  * O x O x
  */
 class MultiLayerPerceptron {
-    constructor({ layerSizes, learningRate = 0.3 }) {
+    constructor({ layerSizes, learningRate = 0.4 }) {
         this.learningRate = learningRate;
         this.inputSize = layerSizes[0];
         this.layerSizes = layerSizes;
@@ -29,7 +29,7 @@ class MultiLayerPerceptron {
             const layerSize = layerSizes[layerIndex];
             const layerNeurons = [];
             const inputNeurons = isInputLayer ? null : this.layers[layerIndex -1];
-            //create layer with references to previous as inputs
+            // Create layer with references to previous as inputs
             for(let neuronIndex = 0; neuronIndex < layerSize; neuronIndex++){
                 const neuron = new Neuron({ layerIndex, index: neuronIndex});
                 if(inputNeurons){
@@ -40,8 +40,8 @@ class MultiLayerPerceptron {
                 layerNeurons.push(neuron);
             }
             this.layers.push(layerNeurons);
-            //adjust previous layer, add references to outputs
-            //save references, corresponding input wire and corresponding output wire should be the same object
+            // Adjust previous layer, add references to outputs
+            // Save references, corresponding input wire and corresponding output wire should be the same object
             if (inputNeurons){
                 inputNeurons.forEach(prevLayerNeuron => {
                     prevLayerNeuron.outputWires = [];
@@ -59,17 +59,13 @@ class MultiLayerPerceptron {
         // Backpropagation: from last to first
         for(let layer of this.layers.slice().reverse()){
             const isOutput = layer === this.layers[this.layers.length - 1];
-            const isInput = layer === this.layers[0];
 
             layer.forEach(neuron => {
                 if (isOutput) {
                     neuron.calculateErrorAndDelta(expectedOutput[neuron.index]);
                 } else {
                     neuron.calculateErrorAndDelta();
-                }
-
-                if (!isInput){
-                    neuron.adjustInputWiresWeights(this.learningRate);
+                    neuron.adjustOutputWiresWeights(this.learningRate);
                 }
             });
         }

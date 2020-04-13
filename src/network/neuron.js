@@ -32,7 +32,7 @@ class Neuron {
     }
 
     calculateErrorAndDelta(expectedValue){
-        if (expectedValue != null) {
+        if (typeof expectedValue === 'number') {
             // Expected value may be only for output neurons
             this.error = expectedValue - this.value;
         } else {
@@ -44,9 +44,9 @@ class Neuron {
         this.delta = this.value * (1 - this.value) * this.error;
     }
 
-    adjustInputWiresWeights(learningRate = 0.3){
-        this.inputWires.forEach(wire => {
-            wire.weight = learningRate * wire.inputNeuron.value * this.delta;
+    adjustOutputWiresWeights(learningRate = 0.3){
+        this.outputWires.forEach(wire => {
+            wire.weight += learningRate * wire.inputNeuron.value * wire.outputNeuron.delta;
         });
 
         this.inputBias += learningRate * this.delta;

@@ -14,7 +14,7 @@ function serialize(network){
     for (let layer of network.layers) {
         const serializedLayer = [];
         layer.forEach(neuron => {
-            const serializedNeuron = { inputBias: neuron.inputBias };
+            const serializedNeuron = { inputBias: neuron.inputBias, layerIndex: neuron.layerIndex, index: neuron.index };
             if (neuron.inputWires){
                 serializedNeuron.inputWeights = neuron.inputWires.map(w => w.weight);
             }

@@ -2,7 +2,7 @@ const trainDataProvider = require('./train-data-provider');
 const networkSerializer = require('./network-serializer');
 const utils = require('./network/utils');
 
-const errorTreshold = 0.0000001;
+const errorTreshold = 0.2;
 
 function train(network) {
     console.log('Preparing for training...');
