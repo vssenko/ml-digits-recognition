@@ -4,6 +4,10 @@ const path = require('path');
 
 const saveFolder = path.join(__dirname, `..${config.serialization.folder}`);
 
+if (!fs.existsSync(saveFolder)){
+    fs.mkdirSync(saveFolder);
+}
+
 function serialize(network){
     const serializationObject = { layers: [], layerSizes: network.layerSizes};
 
@@ -22,10 +26,13 @@ function serialize(network){
     const fileName = `network-${network.layerSizes.join('-')}.json`;
     const fullName = path.join(saveFolder, fileName);
     console.log(`Saving to ${fullName}`);
+    if(fs.existsSync(fullName)){
+        fs.unlinkSync(fullName);
+    }
     fs.writeFileSync(fullName, JSON.stringify(serializationObject));
 }
 
-function deserialize(network){
+function deserialize(){
 
 }
 

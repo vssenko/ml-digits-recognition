@@ -6,6 +6,10 @@ const zlib = require('zlib');
 
 const saveFolder = path.join(process.cwd(), config.dataset.folder);
 
+if (!fs.existsSync(saveFolder)){
+    fs.mkdirSync(saveFolder);
+}
+
 const getFileLocation = fileName => path.join(saveFolder, fileName);
 const getFileUrl = (link, fileName) => `${link}${fileName}.gz`;
 
@@ -40,9 +44,6 @@ async function downloadFile(link, fileName){
 }
 
 async function main(){
-    if (!fs.existsSync(saveFolder)){
-        fs.mkdirSync(saveFolder);
-    }
     for (const fileName of Object.values(config.mnist.files)){
         await downloadFile(config.mnist.link, fileName);
     }
