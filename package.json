@@ -5,8 +5,8 @@
     "main": "index.js",
     "scripts": {
         "start": "node ./bin/start",
-        "download-dataset": "node ./bin/download-dataset",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "train": "node ./bin/train",
+        "download-dataset": "node ./bin/download-dataset"
     },
     "repository": {
         "type": "git",

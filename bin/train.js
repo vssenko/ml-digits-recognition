@@ -1,6 +1,6 @@
 const MultiLayerPerceptron = require('../src/network/multi-layer-perceptron');
 const trainer = require('../src/image-trainer');
 
-const perceptron = new MultiLayerPerceptron({ layerSizes: [3, 5, 2]});
+const perceptron = new MultiLayerPerceptron({ layerSizes: [784, 16, 10], learningRate: 0.1});
 
-trainer.test(perceptron);
+trainer.train(perceptron);

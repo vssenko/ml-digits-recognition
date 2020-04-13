@@ -13,8 +13,11 @@ const generateRandomWeightsArray = size => {
 
 const sigmoid = x => 1 / (1 + Math.pow(Math.E, -x));
 
+const costFunction = (result, expected) => 1 / 2 * result.reduce((sum,val,ind) => sum + Math.abs(val - expected[ind]),0);
+
 module.exports = {
     generateRandomWeight,
     generateRandomWeightsArray,
-    sigmoid
+    sigmoid,
+    costFunction
 };

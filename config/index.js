@@ -10,5 +10,8 @@ module.exports = {
     },
     dataset: {
         folder: '/dataset'
+    },
+    serialization: {
+        folder: '/serialized-network-samples'
     }
 };

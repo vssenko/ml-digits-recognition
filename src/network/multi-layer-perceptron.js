@@ -18,7 +18,7 @@ class MultiLayerPerceptron {
     constructor({ layerSizes, learningRate = 0.3 }) {
         this.learningRate = learningRate;
         this.inputSize = layerSizes[0];
-        this.layersCount = layerSizes.length;
+        this.layerSizes = layerSizes;
         this._initNeurons(layerSizes);
     }
 
@@ -31,7 +31,7 @@ class MultiLayerPerceptron {
             const inputNeurons = isInputLayer ? null : this.layers[layerIndex -1];
             //create layer with references to previous as inputs
             for(let neuronIndex = 0; neuronIndex < layerSize; neuronIndex++){
-                const neuron = new Neuron(neuronIndex);
+                const neuron = new Neuron({ layerIndex, index: neuronIndex});
                 if(inputNeurons){
                     const wires = inputNeurons.map(inputNeuron => new Wire(inputNeuron, neuron));
                     neuron.inputWires = wires;
@@ -53,10 +53,28 @@ class MultiLayerPerceptron {
             }
         }
     }
-    trainWithData(inputData, expectedOutput) {
-        this.run(inputData);
 
-        //TODO: FINISH
+    trainWithData(inputData, expectedOutput) {
+        const result = this.run(inputData);
+        // Backpropagation: from last to first
+        for(let layer of this.layers.slice().reverse()){
+            const isOutput = layer === this.layers[this.layers.length - 1];
+            const isInput = layer === this.layers[0];
+
+            layer.forEach(neuron => {
+                if (isOutput) {
+                    neuron.calculateErrorAndDelta(expectedOutput[neuron.index]);
+                } else {
+                    neuron.calculateErrorAndDelta();
+                }
+
+                if (!isInput){
+                    neuron.adjustInputWiresWeights(this.learningRate);
+                }
+            });
+        }
+
+        return result;
     }
 
     run(inputData) {
