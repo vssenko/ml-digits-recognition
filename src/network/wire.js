@@ -4,11 +4,11 @@ const utils = require('./utils');
 // Contains weight of connection
 
 class Wire {
-    constructor(inputNeuron, outputNeuron){
-        this.inputNeuron = inputNeuron;
-        this.outputNeuron = outputNeuron;
-        this.weight = utils.generateRandomWeight();
-    }
+  constructor(inputNeuron, outputNeuron){
+    this.inputNeuron = inputNeuron;
+    this.outputNeuron = outputNeuron;
+    this.weight = utils.generateRandomWeight();
+  }
 }
 
 module.exports = Wire;
