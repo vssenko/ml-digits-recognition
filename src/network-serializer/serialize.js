@@ -1,4 +1,4 @@
-const config = require('../config');
+const config = require('../../config');
 const fs = require('fs');
 const path = require('path');
 
@@ -8,7 +8,7 @@ if (!fs.existsSync(saveFolder)){
   fs.mkdirSync(saveFolder);
 }
 
-function serialize(network){
+module.exports = function serialize(network){
   const serializationObject = { layers: [], layerSizes: network.layerSizes};
 
   for (let layer of network.layers) {
@@ -30,13 +30,4 @@ function serialize(network){
     fs.unlinkSync(fullName);
   }
   fs.writeFileSync(fullName, JSON.stringify(serializationObject));
-}
-
-function deserialize(){
-
-}
-
-module.exports = {
-  serialize,
-  deserialize
 };

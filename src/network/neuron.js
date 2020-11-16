@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const utils = require('./utils');
 
 // Handy class representing neuron
@@ -5,17 +6,18 @@ const utils = require('./utils');
 // Able to generate its value and adjust his input weights
 
 class Neuron {
-  constructor({layerIndex, index}) {
-    // Just for debug / better understanding
+  constructor({layerIndex, index} = {}) {
+    // Fields for debug/better understanding
     this.layerIndex = layerIndex;
     this.index = index;
 
+    // Fields for calculation
     this.value = 0;
-    this.inputBias = 0;
+    this.inputBias = utils.generateRandomWeight();
     this.inputWires = null;
     this.outputWires = null;
 
-    //For training
+    // Fields for training
     this.delta = 0;
     this.error = 0;
   }
@@ -32,8 +34,7 @@ class Neuron {
   }
 
   calculateErrorAndDelta(expectedValue){
-    if (typeof expectedValue === 'number') {
-      // Expected value may be only for output neurons
+    if (!_.isNil(expectedValue)) {
       this.error = expectedValue - this.value;
     } else {
       if (!this.outputWires){

@@ -11,6 +11,9 @@ module.exports = {
   dataset: {
     folder: '/dataset'
   },
+  training: {
+    epochesCount: 5
+  },
   serialization: {
     folder: '/serialized-network-samples'
   }

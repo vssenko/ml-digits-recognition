@@ -1,4 +1,4 @@
-const utils = require('./utils');
+const _ = require('lodash');
 const Neuron = require('./neuron');
 const Wire = require('./wire');
 
@@ -8,14 +8,12 @@ const Wire = require('./wire');
  * but demonstrates well how perceptron works.
  * Example input [3,5,2] (3- input layer size, 5 - hidden layer size, 2 - output layer size)
  * will produce neural network:
- * O x O x
- *   x O x O
- * O x O x
- *   x O x O
- * O x O x
+ *   O x O x O
+ * O x O x O x O X O
+ *     O x O
  */
 class MultiLayerPerceptron {
-  constructor({ layerSizes, learningRate = 0.4 }) {
+  constructor({ layerSizes, learningRate = 0.01 }) {
     this.learningRate = learningRate;
     this.inputSize = layerSizes[0];
     this.layerSizes = layerSizes;
@@ -35,7 +33,6 @@ class MultiLayerPerceptron {
         if(inputNeurons){
           const wires = inputNeurons.map(inputNeuron => new Wire(inputNeuron, neuron));
           neuron.inputWires = wires;
-          neuron.inputBias = utils.generateRandomWeight();
         }
         layerNeurons.push(neuron);
       }
@@ -58,7 +55,7 @@ class MultiLayerPerceptron {
     const result = this.run(inputData);
     // Backpropagation: from last to first
     for(let layer of this.layers.slice().reverse()){
-      const isOutput = layer === this.layers[this.layers.length - 1];
+      const isOutput = layer === _.last(this.layers);
 
       layer.forEach(neuron => {
         if (isOutput) {

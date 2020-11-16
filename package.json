@@ -1,30 +1,34 @@
 {
-    "name": "ml-digits-recognition",
-    "version": "1.0.0",
-    "description": "Machine learning application with JavaScript.",
-    "main": "index.js",
-    "scripts": {
-        "start": "node ./bin/start",
-        "train": "node ./bin/train",
-        "test-xor": "node ./bin/test-xor",
-        "download-dataset": "node ./bin/download-dataset"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/vssenko/ml-digits-recognition.git"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/vssenko/ml-digits-recognition/issues"
-    },
-    "homepage": "https://github.com/vssenko/ml-digits-recognition#readme",
-    "devDependencies": {
-        "eslint": "^6.8.0"
-    },
-    "dependencies": {
-        "axios": "^0.19.2",
-        "zlib": "^1.0.5"
-    }
+  "name": "ml-digits-recognition",
+  "version": "1.0.0",
+  "description": "Machine learning application with JavaScript.",
+  "main": "index.js",
+  "scripts": {
+    "train-and-test": "node ./bin/train-and-test",
+    "train": "node ./bin/train",
+    "test-xor": "node ./bin/test-xor",
+    "download-dataset": "node ./bin/download-dataset",
+    "test": "mocha --config ./tests/test.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vssenko/ml-digits-recognition.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vssenko/ml-digits-recognition/issues"
+  },
+  "homepage": "https://github.com/vssenko/ml-digits-recognition#readme",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "eslint": "^6.8.0",
+    "mocha": "^8.2.1"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "lodash": "^4.17.20",
+    "zlib": "^1.0.5"
+  }
 }
