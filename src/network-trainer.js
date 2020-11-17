@@ -1,8 +1,9 @@
 const config = require('../config');
 const trainDataProvider = require('./train-data-provider');
 const utils = require('./network/utils');
+const squaredErrorCostFunction = require('./network/costFunctions/squaredError');
 
-const errorTreshold = 0.005;
+const errorTreshold = 0.05;
 
 function train(network) {
   console.log('Preparing for training...');
@@ -27,8 +28,8 @@ function train(network) {
       }
       const data = sample.imageBytes;
       const expected = sample.labelArrayRepresentation;
-      const result = network.trainWithData(data, expected);
-      currentCost = utils.costFunction(result, expected);
+      const result = network.train(data, expected);
+      currentCost = squaredErrorCostFunction(result, expected);
       if (currentCost <= errorTreshold){
         console.log(`Cost is satisfying (${currentCost}), stop training.`);
         errorIsSatisfying = true;
@@ -45,15 +46,10 @@ function test(network) {
   console.log('Starting testing network...');
   let totalProceed = 0;
   let invalidAnswerCount = 0;
-  for (let i = 0; i < testData.length; i++){
-    const sample = testData[i];
-    if (!(i % 5000)) {
-      let errorPercent = invalidAnswerCount / totalProceed * 100;
-      console.log(`Processing test data sample #${i}. Current error percent : ${errorPercent}`);
-    }
+  for (let sample of testData){
     const data = sample.imageBytes;
     const expected = sample.labelArrayRepresentation;
-    const resultArray = network.trainWithData(data, expected);
+    const resultArray = network.train(data, expected);
     const resultLabel = utils.resultArrayToLabel(resultArray);
 
     if (resultLabel != sample.label){

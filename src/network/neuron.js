@@ -1,23 +1,25 @@
 const _ = require('lodash');
 const utils = require('./utils');
 
-// Handy class representing neuron
-// Can access both inputs and outputs
+const neuronPrinter = require('./printers/neuron-printer');
+
+// Class representing a neuron
+// Can access both input and output wires
 // Able to generate its value and adjust his input weights
 
 class Neuron {
-  constructor({layerIndex, index} = {}) {
-    // Fields for debug/better understanding
+  constructor({layerIndex, index, activator, silent } = {}) {
     this.layerIndex = layerIndex;
     this.index = index;
-
-    // Fields for calculation
+    this.silent = silent;
+    this.activator = activator;
     this.value = 0;
-    this.inputBias = utils.generateRandomWeight();
+    if (layerIndex != 0){
+      this.inputBias = utils.generateRandomWeight();
+    }
     this.inputWires = null;
     this.outputWires = null;
 
-    // Fields for training
     this.delta = 0;
     this.error = 0;
   }
@@ -30,7 +32,11 @@ class Neuron {
     const inputSum = this.inputWires.reduce((sum, wire) => {
       return sum + wire.inputNeuron.value * wire.weight;
     }, 0);
-    this.value = utils.sigmoid(inputSum + this.inputBias);
+  
+    this.value = this.activator.func(inputSum + this.inputBias);
+    if (!this.silent){
+      neuronPrinter.printCalculation(this);
+    }
   }
 
   calculateErrorAndDelta(expectedValue){
@@ -42,7 +48,7 @@ class Neuron {
       }
       this.error = this.outputWires.reduce((err, wire) => err + wire.outputNeuron.delta * wire.weight, 0);
     }
-    this.delta = this.value * (1 - this.value) * this.error;
+    this.delta = this.activator.deriative(this.value) * this.error;
   }
 
   adjustOutputWiresWeights(learningRate = 0.3){

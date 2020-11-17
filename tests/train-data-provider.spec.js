@@ -1,7 +1,7 @@
 const chai = require('chai');
 const { expect } = chai;
 
-const testData = require('./data/trainImageBytes');
+const testData = require('./_misc/trainImageBytes');
 
 const trainDataProvider = require('../src/train-data-provider');
 

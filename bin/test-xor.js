@@ -9,10 +9,10 @@ const data = [
 
 const network = new MultiLayerPerceptron({layerSizes: [2,4,1], learningRate: 0.2});
 
-const epochCount = 100000;
+const epochCount = 50000;
 
 for (let epoch = 0; epoch < epochCount; epoch++){
-  data.forEach(d => network.trainWithData(d.input, d.output));
+  data.forEach(d => network.train(d.input, d.output));
 }
 
 console.log(`After ${epochCount} epochs...`);

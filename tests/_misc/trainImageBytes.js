@@ -1,3 +1,5 @@
+//This is exact first 2 byte arrays from MNIST train dataset
+
 //this looks really as 5
 const firstTrainDataImageBytes = [
   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 

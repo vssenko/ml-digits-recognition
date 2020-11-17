@@ -1,0 +1,1 @@
+module.exports = (result, expected) => result.reduce((sum,val,ind) => sum + Math.pow(val - expected[ind], 2), 0) / 2;

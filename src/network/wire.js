@@ -1,7 +1,7 @@
 const utils = require('./utils');
 
-// Handly class representing "connection" between one neuron from input layer and one neuron from next layer
-// Contains weight of connection
+// Class representing "connection" between one neuron from alayer and one neuron from the next layer
+// Contains weight of connection, inputNeuron and outputNeuron refs
 
 class Wire {
   constructor(inputNeuron, outputNeuron){
