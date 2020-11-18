@@ -22,7 +22,7 @@ const activatorsMap = {
  * Remember, that you always have option for enabling step-by-step logs (silent: false)
  */
 class MultiLayerPerceptron {
-  constructor({ layerSizes, learningRate = 0.01, activator = 'sigmoid', silent = true }) {
+  constructor({ layerSizes, learningRate = 0.3, activator = 'sigmoid', silent = true }) {
     this.learningRate = learningRate;
     this.inputSize = layerSizes[0];
     this.layerSizes = layerSizes;
@@ -45,7 +45,7 @@ class MultiLayerPerceptron {
       const inputNeurons = isInputLayer ? null : this.layers[layerIndex -1];
       // Create layer with references to previous as inputs
       for(let neuronIndex = 0; neuronIndex < layerSize; neuronIndex++){
-        const neuron = new Neuron({ layerIndex, index: neuronIndex, activator: this.activator, silent: this.silent});
+        const neuron = new Neuron({ layerIndex, index: neuronIndex, activator: this.activator, silent: this.silent, learningRate: this.learningRate});
         if(inputNeurons){
           const wires = inputNeurons.map(inputNeuron => new Wire(inputNeuron, neuron));
           neuron.inputWires = wires;
@@ -67,23 +67,25 @@ class MultiLayerPerceptron {
     }
   }
 
-  train(inputData, expectedOutput) {
+  runAndBackpropagate(inputData, expectedOutput) {
     const result = this.run(inputData);
-    // Backpropagation: from last to first
-    for(let layer of this.layers.slice().reverse()){
+    this.backpropagateError(expectedOutput);
+
+    return result;
+  }
+
+  backpropagateError(expectedOutput){
+    for(let layer of this.layers.slice(1).reverse()){
       const isOutput = layer === _.last(this.layers);
 
       layer.forEach(neuron => {
-        if (isOutput) {
-          neuron.calculateErrorAndDelta(expectedOutput[neuron.index]);
-        } else {
-          neuron.calculateErrorAndDelta();
-          neuron.adjustOutputWiresWeights(this.learningRate);
-        }
-      });
+        this.logState();
+        return isOutput
+          ? neuron.backpropagateForOutputLayer(expectedOutput[neuron.index])
+          : neuron.backpropagateForHiddenLayer();
+      }
+      );
     }
-
-    return result;
   }
 
   run(inputData) {
@@ -91,17 +93,25 @@ class MultiLayerPerceptron {
       throw new Error('Invalid input size');
     }
 
-    this.layers[0].forEach(neuron => neuron.value = inputData[neuron.index]);
+    this.layers[0].forEach(neuron => neuron.output = inputData[neuron.index]);
 
-    this.layers.slice(1).forEach((layer, layerIndex) => {
-      if (!this.silent){
-        networkPrinter.printState(this, {step: layerIndex});
-      }
+    this.layers.slice(1).forEach((layer) => {
+      this.logState();
 
-      layer.forEach(neuron => neuron.calculateValue());
+      layer.forEach(neuron => neuron.feedForward());
     });
 
-    return _.last(this.layers).map(n => n.value);
+    return this.getNetworkOutput();
+  }
+
+  getNetworkOutput(){
+    return _.last(this.layers).map(n => n.output);
+  }
+
+  logState(additionalInfo){
+    if (!this.silent){
+      networkPrinter.printState(this, additionalInfo);
+    }
   }
 }
 

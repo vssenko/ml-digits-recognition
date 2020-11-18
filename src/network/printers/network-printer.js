@@ -5,7 +5,7 @@ function printNeuronsState(network){
   console.log('Neuron state:');
   const consoleTable = new Table({colors: false});
   network.layers.forEach((layer, layerIndex) => {
-    const layerState = layer.map((n, nind) => `n(${nind}): v ${n.value}, b ${_.isNil(n.inputBias) ? 'N/A': n.inputBias}`);
+    const layerState = layer.map((n, nind) => `n(${nind}): out ${n.output}, b ${_.isNil(n.bias) ? 'N/A': n.bias}`);
     const key = `Layer ${layerIndex}`;
     consoleTable.push({
       [key]: layerState

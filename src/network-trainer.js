@@ -1,7 +1,7 @@
 const config = require('../config');
 const trainDataProvider = require('./train-data-provider');
 const utils = require('./network/utils');
-const squaredErrorCostFunction = require('./network/costFunctions/squaredError');
+const squaredErrorCostCostFunction = require('./network/mathFunctions/squaredErrorCost');
 
 const errorTreshold = 0.05;
 
@@ -19,6 +19,7 @@ function train(network) {
 
   for (let epoch = 1; epoch <= config.training.epochesCount; epoch++){
     if (errorIsSatisfying){
+      console.log('Breakinig the testing cycle');
       break;
     }
     for (let i = 0; i < trainData.length; i++){
@@ -28,8 +29,8 @@ function train(network) {
       }
       const data = sample.imageBytes;
       const expected = sample.labelArrayRepresentation;
-      const result = network.train(data, expected);
-      currentCost = squaredErrorCostFunction(result, expected);
+      const result = network.runAndBackpropagate(data, expected);
+      currentCost = squaredErrorCostCostFunction(result, expected);
       if (currentCost <= errorTreshold){
         console.log(`Cost is satisfying (${currentCost}), stop training.`);
         errorIsSatisfying = true;
@@ -49,7 +50,7 @@ function test(network) {
   for (let sample of testData){
     const data = sample.imageBytes;
     const expected = sample.labelArrayRepresentation;
-    const resultArray = network.train(data, expected);
+    const resultArray = network.runAndBackpropagate(data, expected);
     const resultLabel = utils.resultArrayToLabel(resultArray);
 
     if (resultLabel != sample.label){

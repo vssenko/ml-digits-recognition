@@ -2,7 +2,7 @@ const config = require('../../config');
 const fs = require('fs');
 const path = require('path');
 
-const saveFolder = path.join(__dirname, `..${config.serialization.folder}`);
+const saveFolder = path.join(process.cwd(), `..${config.serialization.folder}`);
 
 if (!fs.existsSync(saveFolder)){
   fs.mkdirSync(saveFolder);
@@ -14,7 +14,7 @@ module.exports = function serialize(network){
   for (let layer of network.layers) {
     const serializedLayer = [];
     layer.forEach(neuron => {
-      const serializedNeuron = { inputBias: neuron.inputBias, layerIndex: neuron.layerIndex, index: neuron.index };
+      const serializedNeuron = { bias: neuron.bias, layerIndex: neuron.layerIndex, index: neuron.index };
       if (neuron.inputWires){
         serializedNeuron.inputWeights = neuron.inputWires.map(w => w.weight);
       }

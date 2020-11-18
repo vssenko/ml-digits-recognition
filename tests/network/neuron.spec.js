@@ -6,33 +6,42 @@ const sigmoid = require('../../src/network/activators/sigmoid');
 const Neuron = require('../../src/network/neuron');
 
 describe('Neuron', () => {
-  describe('calculateValue()', () => {
+  describe('feedForward()', () => {
     it('should calculate neuron value based on bias, input wires, their values and weights', () => {
-      const neuron = new Neuron({activator: sigmoid});
-      neuron.inputBias = 3;
+      const neuron = new Neuron({activator: sigmoid, learningRate: 0.3, silent: false});
+      neuron.bias = 3;
 
       neuron.inputWires = [
-        {inputNeuron: {value: 5}, weight: 2 },
-        {inputNeuron: {value: -3}, weight: 4},
-        {inputNeuron: {value: 2}, weight: 1},
+        {inputNeuron: {output: 5}, weight: 2 },
+        {inputNeuron: {output: -3}, weight: 4},
+        {inputNeuron: {output: 2}, weight: 1},
       ];
 
       const expectedResult = sigmoid.func(5*2 + (-3)*4 + 2*1 + 3);
 
-      neuron.calculateValue();
+      neuron.feedForward();
 
-      expect(neuron.value).to.eql(expectedResult);
+      expect(neuron.output).to.eql(expectedResult);
     });
   });
 
-  describe('calculateErrorAndDelta()', () => {
-    it('should correctly calculate error and delta with explicit expected value', () => {
+  describe('backpropagateForOutputLayer()', () => {
+    it('should adjust wires and biases for output neuron', () => {
       const neuron = new Neuron({activator: sigmoid});
-      neuron.value = 0.9;
-      neuron.calculateErrorAndDelta(0.1);
-      expect(neuron.error).to.eql(-0.8);
+      neuron.output = 0.9;
+      neuron.inputWires = [
+        { weight: 1, inputNeuron: {output: 10} },
+        { weight: 0.4, inputNeuron: {output: 8} }
+      ];
+      neuron.bias = 0.3;
+      neuron.backpropagateForOutputLayer(0.1);
+      expect(neuron.bias).to.eql(0.318);
+      expect(neuron.inputWires[0].weight).to.eql(1.6);
+      expect(neuron.inputWires[1].weight).to.eql(0.88);
     });
+  });
 
-    it('should correctly calculate error and delta based on next layer delta');
+  describe('backpropagateForHiddenLayer()', () => {
+    it('should adjust wires and biases for hidden neuron');
   });
 });

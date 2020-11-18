@@ -12,8 +12,13 @@ const network = new MultiLayerPerceptron({layerSizes: [2,4,1], learningRate: 0.2
 const epochCount = 50000;
 
 for (let epoch = 0; epoch < epochCount; epoch++){
-  data.forEach(d => network.train(d.input, d.output));
+  data.forEach(d => network.runAndBackpropagate(d.input, d.output));
 }
+
+console.log('here');
+console.log(network.layerSizes);
+
+console.log(network.layers[1][0]);
 
 console.log(`After ${epochCount} epochs...`);
 console.log(`0 XOR 0 = ${network.run([0,0])[0]}`);
