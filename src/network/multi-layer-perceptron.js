@@ -22,12 +22,14 @@ const activatorsMap = {
  * Remember, that you always have option for enabling step-by-step logs (silent: false)
  */
 class MultiLayerPerceptron {
-  constructor({ layerSizes, learningRate = 0.3, activator = 'sigmoid', silent = true }) {
+  constructor({ layerSizes, learningRate = 0.3, learningRateDecay = false, activator = 'sigmoid', silent = true, batchSize = 0 }) {
     this.learningRate = learningRate;
+    this.learningRateDecay = learningRateDecay;
     this.inputSize = layerSizes[0];
     this.layerSizes = layerSizes;
     this.silent = silent;
     this.activator = activatorsMap[activator];
+    this.batchSize = batchSize;
     if (!activator){
       throw new Error('Unsupported activator');
     }
@@ -45,7 +47,7 @@ class MultiLayerPerceptron {
       const inputNeurons = isInputLayer ? null : this.layers[layerIndex -1];
       // Create layer with references to previous as inputs
       for(let neuronIndex = 0; neuronIndex < layerSize; neuronIndex++){
-        const neuron = new Neuron({ layerIndex, index: neuronIndex, activator: this.activator, silent: this.silent, learningRate: this.learningRate});
+        const neuron = new Neuron({ layerIndex, index: neuronIndex, activator: this.activator, silent: this.silent});
         if(inputNeurons){
           const wires = inputNeurons.map(inputNeuron => new Wire(inputNeuron, neuron));
           neuron.inputWires = wires;
@@ -81,8 +83,8 @@ class MultiLayerPerceptron {
       layer.forEach(neuron => {
         this.logState();
         return isOutput
-          ? neuron.backpropagateForOutputLayer(expectedOutput[neuron.index])
-          : neuron.backpropagateForHiddenLayer();
+          ? neuron.backpropagateForOutputLayer(expectedOutput[neuron.index], {learningRate: this.learningRate})
+          : neuron.backpropagateForHiddenLayer({learningRate: this.learningRate});
       }
       );
     }

@@ -9,7 +9,7 @@ const dSquaredErrorCost = require('./mathFunctions/dSquaredErrorCost');
 // Can access both input and output wires
 // Able to generate its value and adjust his input weights
 class Neuron {
-  constructor({layerIndex, index, activator, silent, learningRate = 0.3 } = {}) {
+  constructor({layerIndex, index, activator, silent } = {}) {
     this.layerIndex = layerIndex;
     this.index = index;
     this.silent = silent;
@@ -21,8 +21,6 @@ class Neuron {
     }
     this.inputWires = null;
     this.outputWires = null;
-
-    this.learningRate = learningRate;
     this.delta = 0;
   }
 
@@ -49,7 +47,7 @@ class Neuron {
     }
   }
 
-  backpropagateForOutputLayer(expectedValue) {
+  backpropagateForOutputLayer(expectedValue, {learningRate = 0.3} = {}) {
     const dEtoOutput = dSquaredErrorCost(this.output, expectedValue);
     const dOutputToNetInput = this.activator.dFunc(this.netInput);
     
@@ -57,31 +55,31 @@ class Neuron {
 
     this.delta = dEtoNetInput;
 
-    this.adjustInputWeightsAndBias();
+    this.adjustInputWeightsAndBias(learningRate);
     if (!this.silent){
       neuronPrinter.printBackpropagation(this, {dEtoOutput, dOutputToNetInput, dEtoNetInput});
     }
   }
 
-  backpropagateForHiddenLayer() {
+  backpropagateForHiddenLayer({learningRate = 0.3} = {}) {
     const dEtoOutput = _.sumBy(this.outputWires, wire => wire.outputNeuron.delta * wire.bakedWeight);
     const dOutputToNetInput = this.activator.dFunc(this.netInput);
 
     const dEtoNetInput = dEtoOutput * dOutputToNetInput;
     this.delta = dEtoNetInput;
 
-    this.adjustInputWeightsAndBias();
+    this.adjustInputWeightsAndBias(learningRate);
     if (!this.silent){
       neuronPrinter.printBackpropagation(this, {dEtoOutput, dOutputToNetInput, dEtoNetInput});
     }
   }
 
-  adjustInputWeightsAndBias(){
+  adjustInputWeightsAndBias(learningRate){
     this.inputWires.forEach(wire => {
 
-      wire.weight = wire.weight - this.learningRate * this.delta * wire.inputNeuron.output;
+      wire.weight = wire.weight - learningRate * this.delta * wire.inputNeuron.output;
     });
-    this.bias = this.bias - this.learningRate * this.delta * this.bias;
+    this.bias = this.bias - learningRate * this.delta * this.bias;
   }
 }
 
