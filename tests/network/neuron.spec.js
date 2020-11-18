@@ -31,13 +31,13 @@ describe('Neuron', () => {
       neuron.output = 0.9;
       neuron.inputWires = [
         { weight: 1, inputNeuron: {output: 10} },
-        { weight: 0.4, inputNeuron: {output: 8} }
+        { weight: 0.5, inputNeuron: {output: 4} }
       ];
       neuron.bias = 0.3;
       neuron.backpropagateForOutputLayer(0.1);
-      expect(neuron.bias).to.eql(0.318);
-      expect(neuron.inputWires[0].weight).to.eql(1.6);
-      expect(neuron.inputWires[1].weight).to.eql(0.88);
+      expect(neuron.bias).to.eql(0.282);
+      expect(neuron.inputWires[0].weight).to.eql(0.4);
+      expect(neuron.inputWires[1].weight).to.eql(0.26);
     });
   });
 

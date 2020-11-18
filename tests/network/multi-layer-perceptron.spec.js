@@ -41,9 +41,9 @@ describe('MultiLayerPerceptron', () => {
   });
 
   describe('Backward propagation', () => {
-    it.only('should correctly execute backward propagation', () => {
-      const expectedOutput = [0.01, 0.99];
-      perceptron.runAndBackpropagate([0.05, 0.1], expectedOutput);
+    it('should correctly execute backward propagation', () => {
+      const output = [0.01, 0.99];
+      perceptron.runAndBackpropagate([0.05, 0.1], output);
 
       //last layer input weights
       expect(perceptron.layers[1][0].outputWires[0].weight).to.eql(0.35891647971788465);

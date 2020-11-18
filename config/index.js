@@ -12,7 +12,9 @@ module.exports = {
     folder: '/dataset'
   },
   training: {
-    epochesCount: 5
+    defaultEpochcesCount: 10,
+    defaultErrorTreshold: 0.05,
+    successfullStreak: 10
   },
   serialization: {
     folder: '/serialized-network-samples'

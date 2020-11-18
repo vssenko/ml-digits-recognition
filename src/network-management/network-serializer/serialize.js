@@ -1,8 +1,8 @@
-const config = require('../../config');
+const config = require('../../../config');
 const fs = require('fs');
 const path = require('path');
 
-const saveFolder = path.join(process.cwd(), `..${config.serialization.folder}`);
+const saveFolder = path.join(process.cwd(), `${config.serialization.folder}`);
 
 if (!fs.existsSync(saveFolder)){
   fs.mkdirSync(saveFolder);

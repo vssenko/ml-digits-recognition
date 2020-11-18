@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const generateRandomWeight = () => 2 * (Math.random() - 0.5);
+const generateRandomWeight = () => Math.random();
 
 
 const generateRandomWeightsArray = size => {

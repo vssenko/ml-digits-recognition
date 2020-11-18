@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const config = require('../config');
+const config = require('../../config');
 
 const trainImageFile = config.mnist.files.trainImages;
 const trainLabelFile = config.mnist.files.trainLabels;
@@ -27,7 +27,7 @@ function parseLabelsBuffer(labelsBuffer){
 
   const labels = [];
   let pointer = startPosition;
-  while(pointer < labelsBuffer.length - 1){
+  while(pointer <= labelsBuffer.length - 1){
     labels.push(Uint8Array.from(labelsBuffer.slice(pointer, pointer+step))[0]);
     pointer+=step;
   }
@@ -41,18 +41,19 @@ function labelToArrayRepresentation(label){
 }
 
 function combineArrays(imagesBytesArray, labelsArray){
-  return imagesBytesArray.map((imageBytes, index) => {
+  console.log(`Combying images (${imagesBytesArray.length}) and labels (${labelsArray.length}) arrays`);
+  return imagesBytesArray.map((input, index) => {
     const label = labelsArray[index];
     return {
-      imageBytes,
+      input,
       label,
-      labelArrayRepresentation: labelToArrayRepresentation(label)
+      output: labelToArrayRepresentation(label)
     };
   });
 }
 
 function provideData(imageFileName, labelFileName) {
-  const imagesDataBuffer = fs.readFileSync(path.join(__dirname, `../dataset/${imageFileName}`));
+  const imagesDataBuffer = fs.readFileSync(path.join(process.cwd(), `./dataset/${imageFileName}`));
   console.log(`Read file ${trainImageFile}:`);
   console.log(`${trainImageFile}: Total file length: ${imagesDataBuffer.byteLength}`);
   console.log(`${trainImageFile}: First magic number: ${imagesDataBuffer.slice(0, 4).readInt32BE()}`);
@@ -60,7 +61,7 @@ function provideData(imageFileName, labelFileName) {
   console.log(`${trainImageFile}: Number of rows: ${imagesDataBuffer.slice(8, 12).readInt32BE()}`);
   console.log(`${trainImageFile}: Number of columns: ${imagesDataBuffer.slice(12, 16).readInt32BE()}`);
   console.log('');
-  const labelsDataBuffer = fs.readFileSync(path.join(__dirname, `../dataset/${labelFileName}`));
+  const labelsDataBuffer = fs.readFileSync(path.join(process.cwd(), `./dataset/${labelFileName}`));
   console.log(`Read file ${trainLabelFile}:`);
   console.log(`${trainLabelFile}: Total file length: ${labelsDataBuffer.byteLength}`);
   console.log(`${trainLabelFile}: First magic number: ${labelsDataBuffer.slice(0, 4).readInt32BE()}`);
