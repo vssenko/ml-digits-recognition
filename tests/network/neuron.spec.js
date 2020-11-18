@@ -42,6 +42,23 @@ describe('Neuron', () => {
   });
 
   describe('backpropagateForHiddenLayer()', () => {
-    it('should adjust wires and biases for hidden neuron');
+    it('should adjust wires and biases for hidden neuron', () => {
+      const neuron = new Neuron({activator: sigmoid});
+      neuron.output = 0.9;
+      neuron.inputWires = [
+        { weight: 1, inputNeuron: {output: 10} },
+        { weight: 0.5, inputNeuron: {output: 4} }
+      ];
+      neuron.outputWires = [
+        {bakedWeight: 2, outputNeuron: {delta: 0.2} },
+        {bakedWeight: 0.2, outputNeuron: {delta: 0.1}}
+      ];
+
+      neuron.bias = 0.3;
+      neuron.backpropagateForHiddenLayer(0.1);
+      expect(neuron.bias).to.eql(0.29055);
+      expect(neuron.inputWires[0].weight).to.eql(0.685);
+      expect(neuron.inputWires[1].weight).to.eql(0.374);
+    });
   });
 });
