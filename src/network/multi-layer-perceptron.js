@@ -29,7 +29,6 @@ class MultiLayerPerceptron {
     activator = 'sigmoid',
     silent = true,
     omitBias = false,
-    batchSize = 0
   }) {
     this.learningRate = learningRate;
     this.minLearningRate = minLearningRate || learningRate / 10;
@@ -38,7 +37,6 @@ class MultiLayerPerceptron {
     this.layerSizes = layerSizes;
     this.silent = silent;
     this.activator = activatorsMap[activator];
-    this.batchSize = batchSize;
     this.omitBias = omitBias;
     this._stallBackpropagateCount = 0;
     if (!activator){

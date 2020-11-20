@@ -4,9 +4,6 @@ const squaredErrorCostCostFunction = require('../../network/mathFunctions/square
 
 
 function train(network, trainData, {epochesCount, successfullStreak, errorTreshold, silent = true, serializeAfterEpoch = false} = {}) {
-  // For better speed it, it's better to train network not on every data sample, but with batch approach
-  // But for simplicity i'll keep it as it, on-line
-
   errorTreshold = errorTreshold || config.training.defaultErrorTreshold;
   successfullStreak = successfullStreak || config.training.successfullStreak;
   epochesCount = epochesCount || config.training.defaultEpochcesCount;

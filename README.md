@@ -1,7 +1,10 @@
 # ml-digits-recognition
-Main goal of this application is to show how neural network works step-by-step, with no matrix multiplication.
+Main goal of this application is to show how neural network works step-by-step.
 
-You may be enterested if you want to learn neural networks and don't want to go Python.
+You may be enterested if you:
+- want to learn NN, Perceprton, Feed forwarding and Backpropagation.
+- want to see how NN works step-by-step with no Matrix multiplication.
+- know JavaScript and want to stick with that.
 
 Current implementation is based on plain Multi Layer Perceptron with on-line training (no batches, backpropagation is done after each sample run).
 
