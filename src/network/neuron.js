@@ -1,5 +1,4 @@
 const _ = require('lodash');
-const utils = require('./utils');
 const neuronPrinter = require('./printers/neuron-printer');
 
 const dSquaredErrorCost = require('./mathFunctions/dSquaredErrorCost');

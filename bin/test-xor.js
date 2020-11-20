@@ -1,5 +1,4 @@
 const networkTrainer = require('../src/network-management/network-trainer');
-const networkSerializer = require('../src/network-management/network-serializer');
 const networkPrinter = require('../src/network/printers/network-printer');
 const {MultiLayerPerceptron} = require('../src/network');
 
