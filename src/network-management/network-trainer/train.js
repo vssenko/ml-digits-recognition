@@ -50,7 +50,7 @@ function train(network, trainData, {epochesCount, successfullStreak, errorTresho
       }
     }
     if (serializeAfterEpoch){
-      networkSerializer.serialize(network);
+      networkSerializer.serializeAndSave(network);
     }
   }
 
@@ -58,7 +58,7 @@ function train(network, trainData, {epochesCount, successfullStreak, errorTresho
     console.log('Warning: training was not successfull');
   }
   if (serializeAfterEpoch){
-    networkSerializer.serialize(network);
+    networkSerializer.serializeAndSave(network);
   } 
 }
 

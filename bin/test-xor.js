@@ -30,5 +30,3 @@ console.log(`0 XOR 0 = ${1 - network.run([0,0])[0]}`);
 console.log(`0 XOR 1 = ${network.run([0,1])[1]}`);
 console.log(`1 XOR 0 = ${network.run([1,0])[1]}`);
 console.log(`1 XOR 1 = ${1 - network.run([1,1])[0]}`);
-
-//networkSerializer.serialize(network);

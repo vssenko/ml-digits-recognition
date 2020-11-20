@@ -1,13 +1,3 @@
-const config = require('../../../config');
-const fs = require('fs');
-const path = require('path');
-
-const saveFolder = path.join(process.cwd(), `${config.serialization.folder}`);
-
-if (!fs.existsSync(saveFolder)){
-  fs.mkdirSync(saveFolder);
-}
-
 module.exports = function serialize(network){
   console.log('Serializing network...');
 
@@ -25,11 +15,5 @@ module.exports = function serialize(network){
     serializationObject.layers.push(serializedLayer);
   }
 
-  const fileName = `network-${network.layerSizes.join('-')}.json`;
-  const fullName = path.join(saveFolder, fileName);
-  console.log(`Saving serialized network to ${fullName}`);
-  if(fs.existsSync(fullName)){
-    fs.unlinkSync(fullName);
-  }
-  fs.writeFileSync(fullName, JSON.stringify(serializationObject));
+  return JSON.stringify(serializationObject);
 };

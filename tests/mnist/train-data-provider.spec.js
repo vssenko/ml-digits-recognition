@@ -1,7 +1,7 @@
 const chai = require('chai');
 const { expect } = chai;
 
-const testData = require('../_misc/trainImageBytes');
+const testData = require('../_misc/mnistTrainSamples');
 
 const trainDataProvider = require('../../src/mnist/train-data-provider');
 
