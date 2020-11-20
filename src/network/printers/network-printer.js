@@ -5,7 +5,7 @@ function printNeuronsState(network){
   console.log('Neuron state:');
   const consoleTable = new Table({colors: false});
   network.layers.forEach((layer, layerIndex) => {
-    const layerState = layer.map((n, nind) => `n(${nind}): out ${n.output}, b ${_.isNil(n.bias) ? 'N/A': n.bias}`);
+    const layerState = layer.map((n, nind) => `n(${nind}): out=${n.output}, b=${_.isNil(n.bias) ? 'N/A': n.bias}`);
     const key = `Layer ${layerIndex}`;
     consoleTable.push({
       [key]: layerState
@@ -24,11 +24,11 @@ function printWiresState(network){
     }
     const wiresStates = [];
     layer.forEach((n) => n.outputWires.forEach(w => {
-      wiresStates.push(`w(${n.index}-${w.outputNeuron.index}):${w.weight}`);
+      wiresStates.push(`w(${n.index}-${w.outputNeuron.index})=${w.weight}`);
     }));
     const key = `Layer ${layerIndex}`;
     consoleTable.push({
-      [key]: wiresStates.join(',')
+      [key]: wiresStates
     });
   });
 

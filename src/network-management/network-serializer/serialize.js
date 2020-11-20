@@ -9,6 +9,8 @@ if (!fs.existsSync(saveFolder)){
 }
 
 module.exports = function serialize(network){
+  console.log('Serializing network...');
+
   const serializationObject = { layers: [], layerSizes: network.layerSizes};
 
   for (let layer of network.layers) {
@@ -25,7 +27,7 @@ module.exports = function serialize(network){
 
   const fileName = `network-${network.layerSizes.join('-')}.json`;
   const fullName = path.join(saveFolder, fileName);
-  console.log(`Saving to ${fullName}`);
+  console.log(`Saving serialized network to ${fullName}`);
   if(fs.existsSync(fullName)){
     fs.unlinkSync(fullName);
   }

@@ -50,8 +50,8 @@ describe('MultiLayerPerceptron', () => {
       expect(perceptron.layers[1][0].outputWires[1].weight).to.eql(0.5113012702387375);
       expect(perceptron.layers[1][1].outputWires[0].weight).to.eql(0.4086661860762334);
       expect(perceptron.layers[1][1].outputWires[1].weight).to.eql(0.5613701211079891);
-      expect(perceptron.layers[2][0].bias).to.eql(0.5584504315114329);
-      expect(perceptron.layers[2][1].bias).to.eql(0.6114294709549668);
+      expect(perceptron.layers[2][0].bias).to.eql(0.5307507191857215);
+      expect(perceptron.layers[2][1].bias).to.eql(0.6190491182582781);
       
       //first layer output weights
       expect(perceptron.layers[0][0].outputWires[0].weight).to.eql(0.1497807161327628);
@@ -59,8 +59,8 @@ describe('MultiLayerPerceptron', () => {
       expect(perceptron.layers[0][1].outputWires[0].weight).to.eql(0.19956143226552567);
       expect(perceptron.layers[0][1].outputWires[1].weight).to.eql(0.29950228726473915);
 
-      expect(perceptron.layers[1][0].bias).to.eql(0.3484650129293398);
-      expect(perceptron.layers[1][1].bias).to.eql(0.34825800542658697);
+      expect(perceptron.layers[1][0].bias).to.eql(0.3456143226552565);
+      expect(perceptron.layers[1][1].bias).to.eql(0.3450228726473914);
     });
   });
 });

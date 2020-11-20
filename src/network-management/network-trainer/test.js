@@ -7,7 +7,7 @@ const squaredErrorCostCostFunction = require('../../network/mathFunctions/square
 function test(network, testData, {errorTreshold} = {}) {
   errorTreshold = errorTreshold || config.training.defaultErrorTreshold;
 
-  console.log(`Starting testing network, error treshhold is {${errorTreshold}}`);
+  console.log(`Starting testing network, error treshhold is ${errorTreshold}`);
 
   let totalProceed = 0;
   let invalidAnswerCount = 0;

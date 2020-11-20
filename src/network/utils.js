@@ -1,6 +1,16 @@
 const _ = require('lodash');
-const generateRandomWeight = () => Math.random();
 
+
+const generateRandomWeight = () => {
+  const w = 2 * (Math.random() - 0.5);
+  const limitValue = Math.abs(w) / 10;
+  if (w > -limitValue && w < limitValue){
+    return generateRandomWeight();
+  }
+  return w;
+};
+
+const generateBias = () => Math.abs(generateRandomWeight());
 
 const generateRandomWeightsArray = size => {
   const arr = new Array(size);
@@ -17,6 +27,7 @@ const resultArrayToLabel = result => {
 };
 
 module.exports = {
+  generateBias,
   generateRandomWeight,
   generateRandomWeightsArray,
   resultArrayToLabel

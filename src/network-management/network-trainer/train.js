@@ -1,10 +1,11 @@
 const config = require('../../../config');
+const networkSerializer = require('../network-serializer');
 const squaredErrorCostCostFunction = require('../../network/mathFunctions/squaredErrorCost');
 
 
-function train(network, trainData, {epochesCount, successfullStreak, errorTreshold, silent = true} = {}) {
-  // For better speed it, it's better to train network not on every data sample, but on chunks
-  // But for simplicity i'll keep it in "brute force" way
+function train(network, trainData, {epochesCount, successfullStreak, errorTreshold, silent = true, serializeAfterEpoch = false} = {}) {
+  // For better speed it, it's better to train network not on every data sample, but with batch approach
+  // But for simplicity i'll keep it as it, on-line
 
   errorTreshold = errorTreshold || config.training.defaultErrorTreshold;
   successfullStreak = successfullStreak || config.training.successfullStreak;
@@ -28,13 +29,15 @@ function train(network, trainData, {epochesCount, successfullStreak, errorTresho
 
     for (let i = 0; i < trainData.length; i++){
       const sample = trainData[i];
-      if (!silent && i > 0 && !(i % 10000)) {
-        console.log(`Epoch ${epoch}. Processing data sample #${i} (Digit ${sample.label}). Current median cost : ${costsSum / i}`);
-      }
       const data = sample.input;
       const expected = sample.output;
       const result = network.run(data);
 
+      if (!silent && i > 0 && !(i % 10000)) {
+        console.log(`Epoch ${epoch}. Processing data sample #${i} (label=${sample.label}). Current median cost : ${costsSum / i}`);
+        console.log(`Network: learning rate = ${network.learningRate}`);
+        console.log(`Network output: ${result}`);
+      }
       currentCost = squaredErrorCostCostFunction(result, expected);
       costsSum +=currentCost;
       if (currentCost <= errorTreshold){
@@ -49,11 +52,17 @@ function train(network, trainData, {epochesCount, successfullStreak, errorTresho
         break;
       }
     }
+    if (serializeAfterEpoch){
+      networkSerializer.serialize(network);
+    }
   }
 
   if (!stopTraining){
     console.log('Warning: training was not successfull');
   }
+  if (serializeAfterEpoch){
+    networkSerializer.serialize(network);
+  } 
 }
 
 module.exports = train;

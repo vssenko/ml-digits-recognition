@@ -34,8 +34,8 @@ describe('Neuron', () => {
         { weight: 0.5, inputNeuron: {output: 4} }
       ];
       neuron.bias = 0.3;
-      neuron.backpropagateForOutputLayer(0.1);
-      expect(neuron.bias).to.eql(0.282);
+      neuron.backpropagateForOutputLayer({expectedOutput: 0.1});
+      expect(neuron.bias).to.eql(0.24);
       expect(neuron.inputWires[0].weight).to.eql(0.4);
       expect(neuron.inputWires[1].weight).to.eql(0.26);
     });
@@ -54,9 +54,9 @@ describe('Neuron', () => {
         {bakedWeight: 0.2, outputNeuron: {delta: 0.1}}
       ];
 
-      neuron.bias = 0.3;
+      neuron.bias = 0.1;
       neuron.backpropagateForHiddenLayer(0.1);
-      expect(neuron.bias).to.eql(0.29055);
+      expect(neuron.bias).to.eql(0.0685);
       expect(neuron.inputWires[0].weight).to.eql(0.685);
       expect(neuron.inputWires[1].weight).to.eql(0.374);
     });

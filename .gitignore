@@ -3,4 +3,5 @@ node_modules
 .vscode
 
 dataset
-serialized-network-samples
+serialized-network-samples/*
+!serialized-network-samples/mnist_working_network-784-512-256-128-10.json

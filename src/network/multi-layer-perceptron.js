@@ -3,9 +3,8 @@ const Neuron = require('./neuron');
 const Wire = require('./wire');
 const networkPrinter = require('./printers/network-printer');
 
-const activatorsMap = {
-  'sigmoid': require('./activators/sigmoid')
-};
+const activatorsMap =  require('./activators');
+const utils = require('./utils');
 
 /**
  * Multi layer perceptron manual implementation.
@@ -22,14 +21,26 @@ const activatorsMap = {
  * Remember, that you always have option for enabling step-by-step logs (silent: false)
  */
 class MultiLayerPerceptron {
-  constructor({ layerSizes, learningRate = 0.3, learningRateDecay = false, activator = 'sigmoid', silent = true, batchSize = 0 }) {
+  constructor({
+    layerSizes,
+    learningRate = 0.3,
+    minLearningRate,
+    learningRateDecayStep, //after how many backpropagations learning rate will be decresed by 10%
+    activator = 'sigmoid',
+    silent = true,
+    omitBias = false,
+    batchSize = 0
+  }) {
     this.learningRate = learningRate;
-    this.learningRateDecay = learningRateDecay;
+    this.minLearningRate = minLearningRate || learningRate / 10;
+    this.learningRateDecayStep = learningRateDecayStep;
     this.inputSize = layerSizes[0];
     this.layerSizes = layerSizes;
     this.silent = silent;
     this.activator = activatorsMap[activator];
     this.batchSize = batchSize;
+    this.omitBias = omitBias;
+    this._stallBackpropagateCount = 0;
     if (!activator){
       throw new Error('Unsupported activator');
     }
@@ -47,7 +58,8 @@ class MultiLayerPerceptron {
       const inputNeurons = isInputLayer ? null : this.layers[layerIndex -1];
       // Create layer with references to previous as inputs
       for(let neuronIndex = 0; neuronIndex < layerSize; neuronIndex++){
-        const neuron = new Neuron({ layerIndex, index: neuronIndex, activator: this.activator, silent: this.silent});
+        const bias = isInputLayer ? 0 : this.omitBias ? 0 : utils.generateBias();
+        const neuron = new Neuron({ layerIndex, index: neuronIndex, activator: this.activator, silent: this.silent, bias});
         if(inputNeurons){
           const wires = inputNeurons.map(inputNeuron => new Wire(inputNeuron, neuron));
           neuron.inputWires = wires;
@@ -77,17 +89,28 @@ class MultiLayerPerceptron {
   }
 
   backpropagateError(expectedOutput){
+    if (
+      this.learningRateDecayStep &&
+      this._stallBackpropagateCount > this.learningRateDecayStep &&
+      this.learningRate > this.minLearningRate
+    ){
+      this.learningRate = Math.max(this.learningRate * 0.9, this.minLearningRate);
+      this._stallBackpropagateCount = 0;
+    }
+
     for(let layer of this.layers.slice(1).reverse()){
       const isOutput = layer === _.last(this.layers);
 
       layer.forEach(neuron => {
         this.logState();
         return isOutput
-          ? neuron.backpropagateForOutputLayer(expectedOutput[neuron.index], {learningRate: this.learningRate})
+          ? neuron.backpropagateForOutputLayer({expectedOutput: expectedOutput[neuron.index], learningRate: this.learningRate})
           : neuron.backpropagateForHiddenLayer({learningRate: this.learningRate});
       }
       );
     }
+
+    this._stallBackpropagateCount += 1;
   }
 
   run(inputData) {

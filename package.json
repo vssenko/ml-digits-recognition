@@ -4,7 +4,7 @@
   "description": "Machine learning application with JavaScript.",
   "main": "index.js",
   "scripts": {
-    "train-and-test": "node ./bin/train-and-test",
+    "test-mnist": "node ./bin/test-mnist",
     "train": "node ./bin/train",
     "test-xor": "node ./bin/test-xor",
     "download-dataset": "node ./bin/download-dataset",
