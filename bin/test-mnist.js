@@ -6,13 +6,14 @@ const mnistTrainData = mnistProvider.getTrainData();
 
 const network = new MultiLayerPerceptron({
   layerSizes: [784, 512, 256, 128, 10],
-  learningRate: 0.01
+  learningRate: 0.01,
+  learningRateDecayStep: 50000
 });
 
 trainer.train(
   network,
   mnistTrainData,
-  { silent: false, epochesCount: 50, successfullStreak: 10, errorTreshold: 0.005, serializeAfterEpoch: true });
+  { silent: false, epochesCount: 5, successfullStreak: 100, errorTreshold: 0.0005, serializeAfterEpoch: true });
 
 const mnistTestData = mnistProvider.getTestData();
 
