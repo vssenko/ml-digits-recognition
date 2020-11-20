@@ -11,7 +11,7 @@ describe('networkSerializer', () => {
     perceptron = testHelpers.getExampleNetwork();
   });
 
-  it.only('should serialize network and deserealize the same', () => {
+  it('should serialize network and deserealize the same', () => {
     const serialized = networkSerializer.serialize(perceptron);
     console.log(serialized);
     const deserealized = networkSerializer.deserialize(serialized);
