@@ -6,8 +6,7 @@ module.exports = {
     'mocha': true
   },
   'extends': [
-    'eslint:recommended',
-    'plugin:react/recommended'
+    'eslint:recommended'
   ],
   'globals': {
     'Atomics': 'readonly',
