@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Machine learning application with JavaScript.",
   "scripts": {
-    "start-react": "cd ./src/gui && react-scripts start",
-    "start-electron": "electron ./src/gui/start-electron.js",
-    "gui": "nf start -p 3000",
     "test-mnist": "node ./bin/test-mnist",
     "train": "node ./bin/train",
     "test-xor": "node ./bin/test-xor",
@@ -32,14 +29,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "cli-table": "^0.3.1",
-    "electron": "^11.0.2",
-    "foreman": "^3.0.1",
     "lodash": "^4.17.20",
-    "react": "^17.0.1",
-    "react-app-rewired": "^2.1.6",
-    "react-dom": "^17.0.1",
-    "react-scripts": "^4.0.1",
-    "web-vitals": "^1.0.1",
     "zlib": "^1.0.5"
   }
 }
