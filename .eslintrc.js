@@ -5,10 +5,14 @@ module.exports = {
     'node': true,
     'mocha': true
   },
-  'extends': 'eslint:recommended',
+  'extends': [
+    'eslint:recommended',
+    'plugin:react/recommended'
+  ],
   'globals': {
     'Atomics': 'readonly',
-    'SharedArrayBuffer': 'readonly'
+    'SharedArrayBuffer': 'readonly',
+    'document': 'readonly'
   },
   'parserOptions': {
     'ecmaVersion': 2018,
